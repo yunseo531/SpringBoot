@@ -19,25 +19,28 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Entity
+@Entity 
+//springboot가 클래스를 Entity로 인식, 생성자를 만들어서 데이터 생성을 하고, 
+//기본적으로 setter를 사용하지않는게 좋음(변경하려면 메소드 추가작성할것)
 public class Question {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(length=200)
+	@Column(length=200)//컬럼에 들어가는 데이터길이제한
 	private String subject;
 	
 	@Column(columnDefinition = "TEXT")
 	private String content;
 	
-	private LocalDateTime createDate;
+	private LocalDateTime createDate; //테이블명 create_date으로 나옴
 	
-	@OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)//fetch=FetchType.EAGER
-	private List<Answer> answerList;
+	@OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE) 
+	//1:n관계, 질문삭제하면 답변도 삭제되도록 CascadeType.REMOVE
+	private List<Answer> answerList;//여러개니까 List형태로
 	
 	@ManyToOne
 	private SiteUser author;
 	
 	private LocalDateTime modifyDate;
-}
+	}
